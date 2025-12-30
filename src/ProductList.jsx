@@ -6,7 +6,7 @@ import { addItem } from './CartSlice';
 
 function ProductList({ onHomeClick }) {
     const dispatch = useDispatch();
-    const [showCart, setShowCart] = useState(false);
+    const [showCart, setShowCart] = useState(true);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({}); //to track which products added to the cart
 
@@ -259,7 +259,7 @@ function ProductList({ onHomeClick }) {
     };
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
-        
+
         setAddedToCart((prevState) => ({ ...prevState, [product.name]: true,
 
         }));
