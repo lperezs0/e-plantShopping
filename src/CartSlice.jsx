@@ -13,7 +13,10 @@ export const CartSlice = createSlice({
             existingItem.quantity++;
         }  
          else {
-            state.items.push({name, image, cost, quantity: 1});
+            //state.items.push({name, image, cost, quantity: 1});
+            const numericCost = typeof cost === "string" ? parseFloat(cost.replace("$", "")) : cost;
+            state.items.push({ name, image, cost: numericCost, quantity: 1 });
+
          }
     },
     removeItem: (state, action) => {

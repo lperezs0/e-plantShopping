@@ -4,27 +4,27 @@ import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector(state => state.cart.items);
+  const cart = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = (item) => {
-    let total = 0;
+  const calculateTotalAmount = () => {
+    return cart.reduce((total, item) => total + item.cost * item.quantity, 0);
+  };
+    /*let total = 0;
     cart.forEach(item => {
         const quantity = item.quantity;
         const costString = item.cost;
         const cost = parseFloat(costString.substring(1));
-        const itemTotal = cost + quantity;
+        const itemTotal = cost * quantity;
         total += itemTotal;
     });
     return total;
-  };
+  };*/
 
   const handleContinueShopping = (e) => {
    onContinueShopping(e);
   };
-
-
 
   const handleIncrement = (item) => {
     dispatch(updateQuantity({name: item.name, quantity: item.quantity +1}));
@@ -49,26 +49,25 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    const cost = parseFloat(item.cost.substring(1));
-    return cost * item.quantity;
+    return item.cost * item.quantity;
   };
 
   return (
     <div className="cart-container">
-      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount().toFixed(2)}</h2>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
             <img className="cart-item-image" src={item.image} alt={item.name} />
             <div className="cart-item-details">
               <div className="cart-item-name">{item.name}</div>
-              <div className="cart-item-cost">{item.cost}</div>
+              <div className="cart-item-cost">${item.cost.toFixed(2)}</div>
               <div className="cart-item-quantity">
                 <button className="cart-item-button cart-item-button-dec" onClick={() => handleDecrement(item)}>-</button>
                 <span className="cart-item-quantity-value">{item.quantity}</span>
                 <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
               </div>
-              <div className="cart-item-total">Total: ${calculateTotalCost(item)}</div>
+              <div className="cart-item-total">Total: ${calculateTotalCost(item).toFixed(2)}</div>
               <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
             </div>
           </div>
